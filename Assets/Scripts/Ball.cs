@@ -6,27 +6,38 @@ public class Ball : MonoBehaviour
     private float _speed;
 
     private Rigidbody2D _rb;
+    private Vector2 _previousVelocity;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    private float RandomDirection()
+    private Vector2 RandomDirection()
     {
-        return Random.Range(45f, 135f);
+
+        float radians = Random.Range(-45f, 45f) * Mathf.Deg2Rad;
+        float x = Mathf.Cos(radians);
+        float y = Mathf.Sin(radians);
+        return new Vector2(x, y);
     }
-    // give the ball a starting direction and speed
+
+    
     private void Start()
     {
-        _rb.linearVelocity = new Vector2(2, 2);
+        _rb.linearVelocity = RandomDirection().normalized * _speed;
     }
 
-    // when the ball hits an object it needs to reflect off
+    private void FixedUpdate()
+    {
+        _previousVelocity = _rb.linearVelocity;
+    }
 
+    // the problem I was having: I wasn't caching the velocity before the impact
+    // instead I was trying to reflect the angle using velocity AFTER the imapct
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        _rb.linearVelocity = new Vector2(_speed * Mathf.Sign(_rb.linearVelocityX) + _rb.linearVelocityX,
-                                         _speed * Mathf.Sign(_rb.linearVelocityY) + _rb.linearVelocityY);
+        Vector2 collisionNormal = collision.GetContact(0).normal;
+        _rb.linearVelocity = Vector2.Reflect(_previousVelocity, collisionNormal);
     }
 }
