@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,7 +23,8 @@ public class PlayerController : MonoBehaviour
 
         // Calculate Y-axis movement with explicit Time.deltaTime for frame-rate independence
         float movement = inputValue.y * moveSpeed * Time.fixedDeltaTime;
+        float clampedY = Mathf.Clamp(currentPos.y + movement, -3.75f, 3.75f);
 
-        _rb.MovePosition(currentPos + new Vector2(0, movement));
+        _rb.MovePosition(new Vector2(currentPos.x, clampedY));
     }
 }
