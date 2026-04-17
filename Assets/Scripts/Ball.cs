@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour
@@ -45,8 +46,10 @@ public class Ball : MonoBehaviour
     {
         Vector2 collisionNormal = collision.GetContact(0).normal;
         _rb.linearVelocity = Vector2.Reflect(_previousVelocity, collisionNormal);
-
-        _currentspeed += 1f;
+        if (collision.gameObject.TryGetComponent<PlayerInput>(out var _))
+        {
+            _currentspeed += 1f;
+        }
         _rb.linearVelocity = _rb.linearVelocity.normalized * _currentspeed;
     }
 }
