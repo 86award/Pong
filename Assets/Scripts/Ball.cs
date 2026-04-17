@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour
 {
     [SerializeField]
@@ -7,10 +8,15 @@ public class Ball : MonoBehaviour
 
     private Rigidbody2D _rb;
     private Vector2 _previousVelocity;
+    private int _toPlayerTwo;
+    private float _currentspeed;
+
+    public int ToPlayerTwo { get => _toPlayerTwo; set { _toPlayerTwo = value; } }
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _currentspeed = _speed;
     }
 
     private Vector2 RandomDirection()
@@ -25,7 +31,7 @@ public class Ball : MonoBehaviour
     
     private void Start()
     {
-        _rb.linearVelocity = RandomDirection().normalized * _speed;
+        _rb.linearVelocity = RandomDirection().normalized * (_speed * Mathf.Sign(_toPlayerTwo));
     }
 
     private void FixedUpdate()
@@ -39,5 +45,8 @@ public class Ball : MonoBehaviour
     {
         Vector2 collisionNormal = collision.GetContact(0).normal;
         _rb.linearVelocity = Vector2.Reflect(_previousVelocity, collisionNormal);
+
+        _currentspeed += 1f;
+        _rb.linearVelocity = _rb.linearVelocity.normalized * _currentspeed;
     }
 }

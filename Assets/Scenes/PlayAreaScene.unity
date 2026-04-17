@@ -892,7 +892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bc40f612d364795bc113d0ade71460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreZone
-  team: 0
+  team: -1
 --- !u!61 &903856440
 BoxCollider2D:
   m_ObjectHideFlags: 0

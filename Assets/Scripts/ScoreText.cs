@@ -21,7 +21,7 @@ public class ScoreText : MonoBehaviour
         _scoreString.text = _score.ToString();
     }
 
-    private void IncrementScore()
+    private void IncrementScore(Team _)
     {
         _score++;
         _scoreString.text = _score.ToString();

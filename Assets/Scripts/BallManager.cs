@@ -16,11 +16,16 @@ public class BallManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        CreateBall();
+        CreateBall(Team.Left);
     }
 
-    private void CreateBall()
+    private void CreateBall(Team e)
     {
-        Instantiate(_ball);
+        GameObject ballInstance = Instantiate(_ball);
+        //Ball ball = ballInstance.TryGetComponent<Ball>(out Ball ball);
+        if (ballInstance.TryGetComponent<Ball>(out Ball ball))
+        {
+            ball.ToPlayerTwo = (int)e;
+        }
     }
 }
